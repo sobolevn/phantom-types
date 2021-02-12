@@ -6,54 +6,54 @@ from phantom.base import Predicate
 
 
 def contains(value: object) -> Predicate[Container]:
-    """Return a predicate that is successful given a container with `value` in it."""
+    """Create a predicate that succeeds when its argument contains ``value``."""
 
-    def compare(container: Container) -> bool:
+    def check(container: Container) -> bool:
         return value in container
 
-    return compare
+    return check
 
 
 def contained(container: Container) -> Predicate[object]:
-    """Return a predicate that is successful given a value contained by `container`."""
+    """Create a predicate that succeeds when ``container`` contains it."""
 
-    def compare(value: object) -> bool:
+    def check(value: object) -> bool:
         return value in container
 
-    return compare
+    return check
 
 
 def count(predicate: Predicate[int]) -> Predicate[Sized]:
     """
-    Return a predicate that is successful given an object with a size satisfying
-    `predicate`.
+    Create a predicate that succeeds when the size of its argument satisfies
+    ``predicate``.
     """
 
-    def compare(sized: Sized) -> bool:
+    def check(sized: Sized) -> bool:
         return predicate(len(sized))
 
-    return compare
+    return check
 
 
 def exists(predicate: Predicate[object]) -> Predicate[Iterable]:
     """
-    Return a predicate that is successful given an iterable where one or more items
-    satisfy `predicate`.
+    Create a predicate that succeeds given an iterable where one or more items satisfy
+    ``predicate``.
     """
 
-    def compare(iterable: Iterable) -> bool:
+    def check(iterable: Iterable) -> bool:
         return any(predicate(item) for item in iterable)
 
-    return compare
+    return check
 
 
 def every(predicate: Predicate[object]) -> Predicate[Iterable]:
     """
-    Return a predicate that is successful given an iterable where all items satisfy
-    `predicate`.
+    Create a predicate that succeeds given an iterable where all items satisfy
+    ``predicate``.
     """
 
-    def compare(iterable: Iterable) -> bool:
+    def check(iterable: Iterable) -> bool:
         return all(predicate(item) for item in iterable)
 
-    return compare
+    return check
