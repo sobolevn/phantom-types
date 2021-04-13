@@ -6,6 +6,7 @@ from typing import Callable
 from typing import ClassVar
 from typing import Generic
 from typing import Iterable
+from typing import Iterator
 from typing import Protocol
 from typing import Sequence
 from typing import TypeVar
@@ -82,7 +83,7 @@ class PhantomBase(metaclass=PhantomMeta):
     @classmethod
     def parse(cls: type[Derived], instance: object) -> Derived:
         if not isinstance(instance, cls):
-            raise TypeError(f"Could not parse {cls} from {instance!r}")
+            raise TypeError(f"Could not parse {cls.__qualname__} from {instance!r}")
         return instance
 
     @classmethod
@@ -174,3 +175,11 @@ class Phantom(PhantomBase, Generic[T]):
         except BoundError:
             return False
         return cls.__predicate__(instance)
+
+    @classmethod
+    def __get_validators__(cls) -> Iterator[Callable]:
+        def check(instance):  # type: ignore
+            if not isinstance(instance, cls):
+                raise TypeError(f"Not an instance of {cls.__qualname__}")
+
+        yield check

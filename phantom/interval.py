@@ -35,6 +35,10 @@ class Interval(Phantom[float], bound=Union[int, float], abstract=True):
             raise TypeError(f"{cls.__qualname__} must define an interval check")
         super().__init_subclass__(predicate=cls.__check__(low, high), **kwargs)
 
+    @classmethod
+    def __modify_schema__(cls, field_schema: dict[str, object]) -> dict[str, object]:
+        ...
+
 
 class Open(Interval, check=interval.open, abstract=True):
     ...
